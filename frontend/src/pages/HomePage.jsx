@@ -4,7 +4,7 @@ import { useOutletContext } from 'react-router-dom';
 import { useHeader } from '../hooks/useHeader.jsx';
 
 import MainFeed from '../components/homeComp/MainFeed.jsx';
-import HomeRightSidebar from '../components/homeComp/HomeRightsidebar.jsx';
+import HomeRightSidebar from '../components/homeComp/HomeRightSidebar';
 import RightSidebar from '../components/dashboardComp/RightSidebar.jsx';
 
 const HomePage = () => {
