@@ -33,11 +33,16 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+    // 1) Jika origin undefined → berarti request dari frontend yang diserve Express (same origin)
+    if (!origin) return callback(null, true);
+
+    // 2) Jika origin terdaftar dalam allowedOrigins
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
     }
+
+    // 3) Selain itu di-block
+    return callback(new Error('Not allowed by CORS'));
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
@@ -82,10 +87,11 @@ if (process.env.NODE_ENV === 'production') {
   const frontendPath = path.join(__dirname, 'public');
   app.use(express.static(frontendPath));
 
-  app.get(/.*/, (req, res) => {
+  app.get('*', (req, res) => {
     res.sendFile(path.join(frontendPath, 'index.html'));
   });
 }
+
 
 // Error handler
 app.use((err, req, res, next) => {
